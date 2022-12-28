@@ -3,6 +3,8 @@ import './App.css'
 import Die from './components/Die'
 import {nanoid} from "nanoid"
 import Confetti from "react-confetti"
+import Stats from './components/Stats'
+import Modal from './components/Modal'
 
 export default function App() {
     const [dice, setDice] = useState(allNewDice())
@@ -141,91 +143,16 @@ export default function App() {
     
     return (
         <>
-          <div className='header-info'>
-                <div>
-                    <label>Rolls: </label>
-                    <p>{rollNo}</p>
-                </div>
-
-                <div>
-                    <label htmlFor="">Time: </label>
-                    <p id="game-time">
-                        {`${gameTime.hours.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${gameTime.minutes.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${gameTime.seconds.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${gameTime.milliseconds.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })}`}
-                    </p>
-                </div>
-
-                <div>
-                    <label htmlFor="">Best Time: </label>
-                    <p>{`${bestTime.hours.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${bestTime.minutes.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${bestTime.seconds.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })} :
-                        ${bestTime.milliseconds.toLocaleString("en-US", {
-                            minimumIntegerDigits: 2,
-                            useGrouping: false
-                        })}`
-                    }</p>
-                </div>
-            </div>
+            <Stats gameTime={gameTime} bestTime={bestTime} rollNo={ rollNo } />
         <main className='relative'>
-                {tenzies && <Confetti />}
-                {isItBestTime && 
-                    <div className='best-score-text' id='best-time-div'>
-                        <h3>Congratulation!</h3>
-                        <p>You got best time score.</p>
-                        <p className='score'>
-                            <strong>
-                                {`${bestTime.hours.toLocaleString("en-US", {
-                                        minimumIntegerDigits: 2,
-                                        useGrouping: false
-                                    })} :
-                                    ${bestTime.minutes.toLocaleString("en-US", {
-                                        minimumIntegerDigits: 2,
-                                        useGrouping: false
-                                    })} :
-                                    ${bestTime.seconds.toLocaleString("en-US", {
-                                        minimumIntegerDigits: 2,
-                                        useGrouping: false
-                                    })} :
-                                    ${bestTime.milliseconds.toLocaleString("en-US", {
-                                        minimumIntegerDigits: 2,
-                                        useGrouping: false
-                                    })}`}
-                            </strong>
-                        </p>
-                    </div>
-                }
-                
+            {tenzies && <Confetti />}
+            {isItBestTime && <Modal bestTime = { bestTime } />}
             <h1 className="title">Tenzies</h1>
             <p className="instructions">Roll until all dice are the same. 
             Click each die to freeze it at its current value between rolls.</p>
             <div className="dice-container">
                 {diceElements}
             </div>
-       
                 {tenzies ?
                     <button 
                         className="roll-dice" 
